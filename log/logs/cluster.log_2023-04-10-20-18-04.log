@@ -1,5 +1,0 @@
-2023-04-10T20:18:04.930525+0800 INFO Start initializing cluster ...
-2023-04-10T20:18:15.967303+0800 INFO Cluster initialized complete
-2023-04-10T20:18:15.967599+0800 INFO Ready to segment and cluster input image
-2023-04-10T20:18:27.742971+0800 INFO segment and cluster complete
-2023-04-10T20:18:27.870682+0800 INFO save segment and cluster result into ./output
