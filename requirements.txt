@@ -1,0 +1,12 @@
+ftfy
+loguru=
+matplotlib
+numpy
+opencv_python
+Pillow
+pycocotools
+PyYAML
+regex
+torch==1.12.0
+torchvision==0.13.0
+tqdm

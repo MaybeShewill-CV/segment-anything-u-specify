@@ -1,0 +1,6 @@
+MODEL:
+    CKPT_DIR: './pretrained/clip'
+    DEVICE: 'cuda:1'
+LOG:
+    SAVE_DIR: './log'
+    LEVEL: INFO

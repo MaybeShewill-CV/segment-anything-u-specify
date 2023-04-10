@@ -1,0 +1,13 @@
+MODEL:
+    DEVICE: 'cuda:1'
+    SAM:
+        CFG_PATH: './config/sam.yaml'
+    CLIP:
+        CFG_PATH: './config/clip.yaml'
+CLUSTER:
+    MAX_INPUT_SIZE: [1280, 1280]
+    SIMILARITY_THRESH: 0.83
+    TOP_K_MASK_COUNT: 200
+LOG:
+    SAVE_DIR: './log'
+    LEVEL: INFO
