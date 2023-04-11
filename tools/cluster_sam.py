@@ -19,7 +19,7 @@ from local_utils.config_utils import parse_config_utils
 from models import build_cluster
 
 
-LOG = init_logger.get_logger('./logs/cluster.log')
+LOG = init_logger.get_logger('cluster.log')
 
 
 def init_args():

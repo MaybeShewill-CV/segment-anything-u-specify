@@ -19,7 +19,7 @@ from local_utils.config_utils import parse_config_utils
 from models import build_sam_clip_text_ins_segmentor
 
 
-LOG = init_logger.get_logger('./logs/instance_seg.log')
+LOG = init_logger.get_logger('instance_seg.log')
 
 
 def init_args():
