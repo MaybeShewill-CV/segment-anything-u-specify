@@ -11,10 +11,39 @@ The main network architecture is as follows:
 
 ## Installation
 Install python envs via commands:
-
 ```
 pip3 install -r requirements.txt
 ```
+Download pretrained model weights
+```
+cd PROJECT_ROOT_DIR
+bash scripts/download_pretrained_ckpt.sh
+```
+
+## Test Instance Segmentation With Text Prompts
+Instance segmentor first using sam model to get all obj's mask of the input image. Second using clip model to classify each mask with both
+image features and your text prompts features.
+
+```
+cd PROJECT_ROOT_DIR
+export PYTHONPATH=$PWD:$PYTHONPATH
+python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bear.jpg --cls_name bear --cls_score_thresh 0.998
+```
+
+`Bear Instance Segmentation Result`
+![bear_insseg_result](./data/resources/test_bear_insseg_result.jpg)
+
+`Athelete Instance Segmentation Result`
+![athlete_insseg_result](./data/resources/test_baseball_insseg_result.jpg)
+
+`Horse Instance Segmentation Result`
+![horse_insseg_result](./data/resources/test_horse_insseg_result.jpg)
+
+`Dog Instance Segmentation Result`
+![dog_insseg_result](./data/resources/test_dog_insseg_result.jpg)
+
+`Fish Instance Segmentation Result`
+![fish_insseg_result](./data/resources/test_fish_insseg_result.jpg)
 
 ## Test cluster
 Cluster first using sam model to get all obj's mask of the input image. Second using clip model to extract image features for each objects. Third calculate feature distance of every two object pairs. Finally using a similarity threshold to cluster source objects.
@@ -22,7 +51,9 @@ Cluster first using sam model to get all obj's mask of the input image. Second u
 To test the cluster simply run
 
 ```
-python tools/cluster_sam.py --input_image_path ./data/test_bear.jpg --simi_thresh 0.82
+cd PROJECT_ROOT_DIR
+export PYTHONPATH=$PWD:$PYTHONPATH
+python tools/cluster_sam.py --input_image_path ./data/test_images/test_bear.jpg --simi_thresh 0.82
 ```
 
 `Bear Cluster Result`
@@ -32,7 +63,6 @@ python tools/cluster_sam.py --input_image_path ./data/test_bear.jpg --simi_thres
 ![horse_cluster_result](./data/resources/test_horse_result.jpg)
 
 Each row represents `source image`, `sam origin mask`, `ori masked image`, `clustered mask`, `cluster masked image`
-
 
 ## TODO
 - [] Test different kinds of cluster method
