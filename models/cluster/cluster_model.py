@@ -15,6 +15,7 @@ import torch
 import torch.nn.functional as F
 
 from models.cluster import utils
+from models.clip import tokenize
 from models import build_clip_model
 from models import build_sam_mask_generator
 
@@ -36,6 +37,8 @@ class SamClipCluster(object):
         self.top_k_objs = cluster_cfg.CLUSTER.TOP_K_MASK_COUNT
         self.similarity_thresh = cluster_cfg.CLUSTER.SIMILARITY_THRESH
         self.max_input_size = cluster_cfg.CLUSTER.MAX_INPUT_SIZE
+        self.imagenet_cls_text_prompts = utils.generate_imagenet_classification_text_prompts()
+        self.imagenet_cls_text_token = tokenize(self.imagenet_cls_text_prompts).to(self.device)
 
     def _generate_sam_mask(self, input_image: np.ndarray):
         """
@@ -68,6 +71,21 @@ class SamClipCluster(object):
 
         return image_features.cpu().numpy()
 
+    def _classify_image(self, input_image: np.ndarray):
+        """
+
+        :param input_image:
+        :return:
+        """
+        image = Image.fromarray(input_image)
+        image = self.clip_preprocess(image).unsqueeze(0).to(self.device)
+        logits_per_image, logits_per_text = self.clip_model(image, self.imagenet_cls_text_token)
+        probs = logits_per_image.softmax(dim=-1).cpu().numpy()[0, :]
+        cls_id = np.argmax(probs)
+        cls_name = self.imagenet_cls_text_prompts[cls_id].replace('a photo of a', '')
+
+        return cls_name
+
     def _extract_mask_features(self, input_image, mask):
         """
 
@@ -86,6 +104,23 @@ class SamClipCluster(object):
 
         mask['bbox_features'] = np.asarray(bboxes_features, dtype=np.float32)
         mask['bbox_ori_ids'] = bboxes_ids
+        return
+
+    def _classify_mask(self, input_image, mask):
+        """
+
+        :param input_image:
+        :param mask:
+        :return:
+        """
+        bboxes_cls_names = []
+        for idx, bbox in enumerate(mask['bboxes']):
+            bbox = [int(tmp) for tmp in bbox]
+            roi_image = input_image[bbox[1]:bbox[1] + bbox[3], bbox[0]:bbox[0] + bbox[2], :]
+            cls_name = self._classify_image(roi_image)
+            bboxes_cls_names.append(cls_name)
+
+        mask['bbox_cls_names'] = bboxes_cls_names
         return
 
     def _cluster_bbox_features(self, bbox_features: np.ndarray):
@@ -128,6 +163,8 @@ class SamClipCluster(object):
             masks = self._generate_sam_mask(input_image)
             # extract each mask's features
             self._extract_mask_features(input_image, masks)
+            # classify each mask's label
+            self._classify_mask(input_image, masks)
 
         # cluster obj ids
         cluster_obj_ids = self._cluster_bbox_features(bbox_features=masks['bbox_features'])
@@ -135,7 +172,12 @@ class SamClipCluster(object):
 
         # diff mask image
         input_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2BGR)
-        ori_mask = utils.generate_sam_mask_images(masks, bbox_cls_ids=masks['bbox_ori_ids'])
+        ori_mask = utils.generate_sam_mask_images(
+            masks,
+            bbox_cls_ids=masks['bbox_ori_ids'],
+            bbox_cls_names=masks['bbox_cls_names'],
+            draw_bbox=True
+        )
         ori_mask_add = cv2.addWeighted(input_image, 0.5, ori_mask, 0.5, 0.0)
         clustered_mask = utils.generate_sam_mask_images(masks, bbox_cls_ids=masks['bbox_cluster_ids'])
         clustered_mask_add = cv2.addWeighted(input_image, 0.5, clustered_mask, 0.5, 0.0)

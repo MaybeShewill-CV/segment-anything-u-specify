@@ -30,7 +30,7 @@ def init_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input_image_path', type=str, default='./data/test_bear.jpg', required=True)
     parser.add_argument('--cluster_cfg_path', type=str, default='./config/cluster.yaml')
-    parser.add_argument('--save_dir', type=str, default='./output')
+    parser.add_argument('--save_dir', type=str, default='./output/cluster')
     parser.add_argument('--simi_thresh', type=float, default=None)
 
     return parser.parse_args()

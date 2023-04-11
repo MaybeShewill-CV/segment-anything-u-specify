@@ -99,3 +99,25 @@ def build_cluster(cfg):
     )
 
     return model
+
+
+import models.detector as sam_clip_insseg
+
+
+def build_sam_clip_text_ins_segmentor(cfg):
+    """
+
+    :param cfg:
+    :return:
+    """
+    sam_cfg_path = cfg.MODEL.SAM.CFG_PATH
+    clip_cfg_path = cfg.MODEL.CLIP.CFG_PATH
+    sam_cfg = parse_config_utils.Config(config_path=sam_cfg_path)
+    clip_cfg = parse_config_utils.Config(config_path=clip_cfg_path)
+    model = sam_clip_insseg.insseg_model.SamClipInsSegmentor(
+        sam_cfg=sam_cfg,
+        clip_cfg=clip_cfg,
+        insseg_cfg=cfg
+    )
+
+    return model

@@ -4,10 +4,10 @@ MODEL:
         CFG_PATH: './config/sam.yaml'
     CLIP:
         CFG_PATH: './config/clip.yaml'
-CLUSTER:
+INS_SEG:
     MAX_INPUT_SIZE: [1280, 1280]
-    SIMILARITY_THRESH: 0.83
-    TOP_K_MASK_COUNT: 50
+    TOP_K_MASK_COUNT: 100
+    CLS_SCORE_THRESH: 0.99
 LOG:
     SAVE_DIR: './log'
     LEVEL: INFO
