@@ -54,6 +54,15 @@ python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bea
 `Glasses Instance Segmentaton Result`
 ![glasses_insseg_result](./data/resources/test_glasses_insseg_result.jpg)
 
+`Tv Instance Segmentaton Result`
+![tv_insseg_result](./data/resources/test_tv_insseg_result.jpg)
+
+`Shoes Instance Segmentaton Result`
+![shoes_insseg_result](./data/resources/test_shoes_insseg_result.jpg)
+
+`Bridge Instance Segmentaton Result`
+![bridge_insseg_result](./data/resources/test_bridge_insseg_result.jpg)
+
 ### Instance Segmentation Problem
 For now the instance segmentation result is sensitive to classification score threshold. And you may get wrong
 instance segmentation mask if the background mask contains most of the instance mask you
