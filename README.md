@@ -12,9 +12,8 @@ The main network architecture is as follows:
 ![SAM](./data/resources/sam_model.png)
 
 ## Installation
-First follow the instruction [here](https://github.com/facebookresearch/segment-anything) to install segment-anything
 
-Install other python envs via commands:
+Install python packages via commands:
 ```
 pip3 install -r requirements.txt
 ```
