@@ -1,5 +1,7 @@
 # Segment-Anything-Clip-Cluster
-Use clip image encoder to cluster objects from sam segmentation model's result.
+Use SAM and CLIP model to segment unique instances you want.
+You may use this repo to segment any instances in the picture with
+text prompts.
 
 The main network architecture is as follows:
 
@@ -45,6 +47,11 @@ python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bea
 `Fish Instance Segmentation Result`
 ![fish_insseg_result](./data/resources/test_fish_insseg_result.jpg)
 
+### Instance Segmentation Problem
+For now the instance segmentation result is sensitive to classification score threshold. And you may get wrong
+instance segmentation mask if the background mask contains most of the instance mask you
+want.
+
 ## Test cluster
 Cluster first using sam model to get all obj's mask of the input image. Second using clip model to extract image features for each objects. Third calculate feature distance of every two object pairs. Finally using a similarity threshold to cluster source objects.
 
@@ -65,8 +72,8 @@ python tools/cluster_sam.py --input_image_path ./data/test_images/test_bear.jpg 
 Each row represents `source image`, `sam origin mask`, `ori masked image`, `clustered mask`, `cluster masked image`
 
 ## TODO
-- [] Test different kinds of cluster method
-- [] Using cluster result as input prompts to reseg the image via sam model
+- [ ] Test different kinds of cluster method
+- [ ] Using cluster result as input prompts to reseg the image via sam model
 
 ## Acknowledgement
 
