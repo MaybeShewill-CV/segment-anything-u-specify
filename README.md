@@ -47,6 +47,9 @@ python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bea
 `Fish Instance Segmentation Result`
 ![fish_insseg_result](./data/resources/test_fish_insseg_result.jpg)
 
+`Strawberry Instance Segmentaton Result`
+![strawberry_insseg_result](./data/resources/test_strawberry_insseg_result.jpg)
+
 ### Instance Segmentation Problem
 For now the instance segmentation result is sensitive to classification score threshold. And you may get wrong
 instance segmentation mask if the background mask contains most of the instance mask you
