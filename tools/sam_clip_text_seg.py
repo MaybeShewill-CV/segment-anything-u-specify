@@ -30,7 +30,7 @@ def init_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input_image_path', type=str, default='./data/test_bear.jpg', required=True)
     parser.add_argument('--insseg_cfg_path', type=str, default='./config/insseg.yaml')
-    parser.add_argument('--cls_name', type=str, default=None)
+    parser.add_argument('--text', type=str, default=None)
     parser.add_argument('--cls_score_thresh', type=float, default=None)
     parser.add_argument('--save_dir', type=str, default='./output/insseg')
 
@@ -54,8 +54,8 @@ def main():
         LOG.error('input innseg cfg path: {:s} not exists'.format(insseg_cfg_path))
         return
     insseg_cfg = parse_config_utils.Config(config_path=insseg_cfg_path)
-    if args.cls_name is not None:
-        unique_labels = [args.cls_name]
+    if args.text is not None:
+        unique_labels = [args.text]
     else:
         unique_labels = None
     if args.cls_score_thresh is not None:

@@ -30,37 +30,37 @@ image features and your text prompts features.
 ```
 cd PROJECT_ROOT_DIR
 export PYTHONPATH=$PWD:$PYTHONPATH
-python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bear.jpg --cls_name bear --cls_score_thresh 0.998
+python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bear.jpg --text bear --cls_score_thresh 0.998
 ```
 
-`Bear Instance Segmentation Result`
+`Bear Instance Segmentation Result, Text Prompt: bear`
 ![bear_insseg_result](./data/resources/test_bear_insseg_result.jpg)
 
-`Athelete Instance Segmentation Result`
+`Athelete Instance Segmentation Result, Text Prompt: athlete`
 ![athlete_insseg_result](./data/resources/test_baseball_insseg_result.jpg)
 
-`Horse Instance Segmentation Result`
+`Horse Instance Segmentation Result, Text Prompt: horse`
 ![horse_insseg_result](./data/resources/test_horse_insseg_result.jpg)
 
-`Dog Instance Segmentation Result`
+`Dog Instance Segmentation Result, Text Prompt: dog`
 ![dog_insseg_result](./data/resources/test_dog_insseg_result.jpg)
 
-`Fish Instance Segmentation Result`
+`Fish Instance Segmentation Result, Text Prompt: fish`
 ![fish_insseg_result](./data/resources/test_fish_insseg_result.jpg)
 
-`Strawberry Instance Segmentaton Result`
+`Strawberry Instance Segmentaton Result, Text Prompt: strawberry`
 ![strawberry_insseg_result](./data/resources/test_strawberry_insseg_result.jpg)
 
-`Glasses Instance Segmentaton Result`
+`Glasses Instance Segmentaton Result, Text Prompt: glasses`
 ![glasses_insseg_result](./data/resources/test_glasses_insseg_result.jpg)
 
-`Tv Instance Segmentaton Result`
+`Tv Instance Segmentaton Result, Text Prompt: television`
 ![tv_insseg_result](./data/resources/test_tv_insseg_result.jpg)
 
-`Shoes Instance Segmentaton Result`
+`Shoes Instance Segmentaton Result, Text Prompt: shoe`
 ![shoes_insseg_result](./data/resources/test_shoes_insseg_result.jpg)
 
-`Bridge Instance Segmentaton Result`
+`Bridge Instance Segmentaton Result, Text Prompt: bridge`
 ![bridge_insseg_result](./data/resources/test_bridge_insseg_result.jpg)
 
 ### Instance Segmentation Problem
