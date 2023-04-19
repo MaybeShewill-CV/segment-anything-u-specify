@@ -93,7 +93,7 @@ class SamClipInsSegmentor(object):
             cls_id = self._classify_image(roi_image, text=text)
             if text is None:
                 cls_name = self.imagenet_cls_text_prompts[cls_id]
-                cls_name.replace('a picture of', '')
+                cls_name.replace('a photo of', '')
                 bboxes_cls_names.append(cls_name)
             else:
                 cls_name = text[cls_id]

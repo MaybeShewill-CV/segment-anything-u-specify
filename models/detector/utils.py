@@ -80,7 +80,7 @@ def generate_imagenet_classification_text_prompts():
 
     :return:
     """
-    text_prefix = 'a picture of'
+    text_prefix = 'a photo of'
     text_prompts = open('./data/resources/imagenet-classes.txt', 'r').readlines()
     text_prompts = list(map(lambda x: x.rstrip('\r').rstrip('\n'), text_prompts))
     text_prompts = list(map(lambda x: ' '.join([text_prefix, x]), text_prompts))
