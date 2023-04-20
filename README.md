@@ -40,7 +40,7 @@ python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bea
 ![athlete_insseg_result](./data/resources/test_baseball_insseg_result.jpg)
 
 `Horse Instance Segmentation Result, Text Prompt: horse`
-![horse_insseg_result](./data/resources/test_horse_insseg_result.jpg)
+![horse_insseg_result](./data/resources/test_horse_insseg_result_after.jpg)
 
 `Dog Instance Segmentation Result, Text Prompt: dog`
 ![dog_insseg_result](./data/resources/test_dog_insseg_result.jpg)
@@ -63,12 +63,19 @@ python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bea
 `Bridge Instance Segmentaton Result, Text Prompt: bridge`
 ![bridge_insseg_result](./data/resources/test_bridge_insseg_result.jpg)
 
+`Airplane Instance Segmentaton Result, Text Prompt: airplane`
+![airplane_insseg_result](./data/resources/test_airplane_insseg_result.jpg)
+
 ### Instance Segmentation Problem
 For now the instance segmentation result is sensitive to classification score threshold. And you may get wrong
 instance segmentation mask if the background mask contains most of the instance mask you
 want.
 
-Most of the background problem has been solved:)
+Most of the background problem has been solved :)
+`Befor Optimize`
+![before](./data/resources/test_horse_insseg_result.jpg)
+`After Optimize`
+![after](./data/resources/test_horse_insseg_result_after.jpg)
 
 ## Test cluster
 Cluster first using sam model to get all obj's mask of the input image. Second using clip model to extract image features for each objects. Third calculate feature distance of every two object pairs. Finally using a similarity threshold to cluster source objects.
