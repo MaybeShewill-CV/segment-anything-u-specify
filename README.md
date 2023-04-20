@@ -72,6 +72,7 @@ instance segmentation mask if the background mask contains most of the instance 
 want.
 
 Most of the background problem has been solved :)
+
 `Befor Optimize`
 ![before](./data/resources/test_horse_insseg_result.jpg)
 `After Optimize`
