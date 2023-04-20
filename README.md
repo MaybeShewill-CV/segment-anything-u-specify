@@ -68,6 +68,8 @@ For now the instance segmentation result is sensitive to classification score th
 instance segmentation mask if the background mask contains most of the instance mask you
 want.
 
+Most of the background problem has been solved:)
+
 ## Test cluster
 Cluster first using sam model to get all obj's mask of the input image. Second using clip model to extract image features for each objects. Third calculate feature distance of every two object pairs. Finally using a similarity threshold to cluster source objects.
 
