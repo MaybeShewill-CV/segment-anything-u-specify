@@ -56,6 +56,41 @@ class SamClipInsSegmentor(object):
         }
         return sam_masks
 
+    @staticmethod
+    def _crop_rotate_image_roi(input_image, seg_mask):
+        """
+
+        :param input_image:
+        :param seg_mask:
+        :return:
+        """
+        y, x = np.where(seg_mask == 1)
+        fg_pts = np.vstack((x, y)).transpose()
+        # rb_center, rb_wh, angle = cv2.minAreaRect(fg_pts)
+        # r_seg_mask = np.asarray(seg_mask, dtype=np.uint8)
+        # m = cv2.getRotationMatrix2D(
+        #     center=(int(r_seg_mask.shape[1] / 2), int(r_seg_mask.shape[0] / 2)),
+        #     angle=-angle,
+        #     scale=1.0
+        # )
+        # src_image = cv2.warpAffine(input_image, m, dsize=(r_seg_mask.shape[1], r_seg_mask.shape[0]))
+        # r_seg_mask = cv2.warpAffine(r_seg_mask, m, dsize=(r_seg_mask.shape[1], r_seg_mask.shape[0]))
+        # y, x = np.where(r_seg_mask == 1)
+        # r_fg_pts = np.vstack((x, y)).transpose()
+        src_image = cv2.bitwise_or(input_image, input_image, mask=np.asarray(seg_mask, dtype=np.uint8))
+        roi_x, roi_y, roi_w, roi_h = cv2.boundingRect(fg_pts)
+        extend_size = 20
+        if roi_x - extend_size >= 0:
+            roi_x -= extend_size
+            roi_w += extend_size
+        if roi_y - extend_size >= 0:
+            roi_y -= extend_size
+            roi_h += extend_size
+        roi_image = src_image[roi_y:roi_y + roi_h, roi_x:roi_x + roi_w, :]
+        if np.any(np.shape(roi_image) < (3, 3)):
+            return None
+        return roi_image
+
     def _classify_image(self, input_image: np.ndarray, text=None):
         """
 
@@ -88,12 +123,18 @@ class SamClipInsSegmentor(object):
         """
         bboxes_cls_names = []
         for idx, bbox in enumerate(mask['bboxes']):
-            bbox = [int(tmp) for tmp in bbox]
-            roi_image = input_image[bbox[1]:bbox[1] + bbox[3], bbox[0]:bbox[0] + bbox[2], :]
+            # bbox = [int(tmp) for tmp in bbox]
+            # roi_image = input_image[bbox[1]:bbox[1] + bbox[3], bbox[0]:bbox[0] + bbox[2], :]
+            roi_image = self._crop_rotate_image_roi(input_image, mask['segmentations'][idx])
+            if roi_image is None:
+                cls_name = 'background'
+                bboxes_cls_names.append(cls_name)
+                continue
+            # cv2.imwrite('{:d}_mask.png'.format(idx), roi_image[:, :, (2, 1, 0)])
             cls_id = self._classify_image(roi_image, text=text)
             if text is None:
                 cls_name = self.imagenet_cls_text_prompts[cls_id]
-                cls_name.replace('a picture of', '')
+                cls_name.replace('a photo of', '')
                 bboxes_cls_names.append(cls_name)
             else:
                 cls_name = text[cls_id]
