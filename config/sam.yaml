@@ -1,6 +1,6 @@
 MODEL:
     CKPT_PATH: './pretrained/sam/sam_vit_h_4b8939.pth'
-    DEVICE: 'cuda:1'
+    DEVICE: 'cuda'
 MASK_GENERATOR:
     PTS_PER_SIDE: 32
     PTS_PER_BATCH: 64

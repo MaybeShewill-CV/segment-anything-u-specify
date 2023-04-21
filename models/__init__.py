@@ -74,7 +74,8 @@ def build_clip_model(cfg):
     """
     ckpt_dir = cfg.MODEL.CKPT_DIR
     device = cfg.MODEL.DEVICE
-    model, preprocess = clip.load("ViT-B/32", device=device, download_root=ckpt_dir)
+    model_name = cfg.MODEL.NAME
+    model, preprocess = clip.load(model_name, device=device, download_root=ckpt_dir)
 
     return model, preprocess
 

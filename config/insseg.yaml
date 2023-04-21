@@ -1,5 +1,5 @@
 MODEL:
-    DEVICE: 'cuda:1'
+    DEVICE: 'cuda'
     SAM:
         CFG_PATH: './config/sam.yaml'
     CLIP:

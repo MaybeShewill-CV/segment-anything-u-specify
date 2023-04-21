@@ -1,6 +1,7 @@
 MODEL:
     CKPT_DIR: './pretrained/clip'
-    DEVICE: 'cuda:1'
+    DEVICE: 'cuda'
+    NAME: 'ViT-B/32'
 LOG:
     SAVE_DIR: './log'
     LEVEL: INFO
