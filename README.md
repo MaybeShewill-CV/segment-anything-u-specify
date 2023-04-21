@@ -23,7 +23,7 @@ cd PROJECT_ROOT_DIR
 bash scripts/download_pretrained_ckpt.sh
 ```
 
-## Test Instance Segmentation With Text Prompts
+## Instance Segmentation With Text Prompts
 Instance segmentor first using sam model to get all obj's mask of the input image. Second using clip model to classify each mask with both
 image features and your text prompts features.
 
@@ -81,22 +81,17 @@ python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_hor
 ![strawberry_insseg_result](./data/resources/test_strawberry_insseg_result_multi_label.jpg)
 `Frog Instance Segmentaton Result, Text Prompt: frog,turtle,snail,eye`
 ![frog_insseg_result](./data/resources/test_frog_insseg_result_multi_label.jpg)
-`Frog Instance Segmentaton Result, Text Prompt: frog,turtle,snail,eye`
-![frog_insseg_result](./data/resources/test_frog_insseg_result_multi_label.jpg)
 
-### Instance Segmentation Problem
-For now the instance segmentation result is sensitive to classification score threshold. And you may get wrong
-instance segmentation mask if the background mask contains most of the instance mask you
-want.
+#### Instance Segmentation Provement
 
-Most of the background problem has been solved :)
+##### 2023-04-21 improve background segmentation problem
 
 `Befor Optimize`
 ![before](./data/resources/test_horse_insseg_result.jpg)
 `After Optimize`
 ![after](./data/resources/test_horse_insseg_result_after.jpg)
 
-## Test cluster
+## Unsupervised Cluster Semantic Objects From SAM Model
 Cluster first using sam model to get all obj's mask of the input image. Second using clip model to extract image features for each objects. Third calculate feature distance of every two object pairs. Finally using a similarity threshold to cluster source objects.
 
 To test the cluster simply run
