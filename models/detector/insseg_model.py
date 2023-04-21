@@ -36,8 +36,18 @@ class SamClipInsSegmentor(object):
         self.top_k_objs = insseg_cfg.INS_SEG.TOP_K_MASK_COUNT
         self.cls_score_thresh = insseg_cfg.INS_SEG.CLS_SCORE_THRESH
         self.max_input_size = insseg_cfg.INS_SEG.MAX_INPUT_SIZE
-        self.imagenet_cls_text_prompts = utils.generate_imagenet_classification_text_prompts()
-        self.imagenet_cls_text_token = tokenize(self.imagenet_cls_text_prompts).to(self.device)
+        self.obj365_text_prompts = utils.generate_object365_text_prompts()
+        self.obj365_text_token = tokenize(self.obj365_text_prompts).to(self.device)
+        self.text_token = None
+
+    def _set_text_tokens(self, texts):
+        """
+
+        :param texts:
+        :return:
+        """
+        self.text_token = tokenize(texts=texts).to(self.device)
+        return
 
     def _generate_sam_mask(self, input_image: np.ndarray):
         """
@@ -66,17 +76,6 @@ class SamClipInsSegmentor(object):
         """
         y, x = np.where(seg_mask == 1)
         fg_pts = np.vstack((x, y)).transpose()
-        # rb_center, rb_wh, angle = cv2.minAreaRect(fg_pts)
-        # r_seg_mask = np.asarray(seg_mask, dtype=np.uint8)
-        # m = cv2.getRotationMatrix2D(
-        #     center=(int(r_seg_mask.shape[1] / 2), int(r_seg_mask.shape[0] / 2)),
-        #     angle=-angle,
-        #     scale=1.0
-        # )
-        # src_image = cv2.warpAffine(input_image, m, dsize=(r_seg_mask.shape[1], r_seg_mask.shape[0]))
-        # r_seg_mask = cv2.warpAffine(r_seg_mask, m, dsize=(r_seg_mask.shape[1], r_seg_mask.shape[0]))
-        # y, x = np.where(r_seg_mask == 1)
-        # r_fg_pts = np.vstack((x, y)).transpose()
         src_image = cv2.bitwise_or(input_image, input_image, mask=np.asarray(seg_mask, dtype=np.uint8))
         roi_x, roi_y, roi_w, roi_h = cv2.boundingRect(fg_pts)
         extend_size = 20
@@ -100,14 +99,19 @@ class SamClipInsSegmentor(object):
         image = Image.fromarray(input_image)
         image = self.clip_preprocess(image).unsqueeze(0).to(self.device)
         if text is None:
-            logits_per_image, logits_per_text = self.clip_model(image, self.imagenet_cls_text_token)
+            logits_per_image, logits_per_text = self.clip_model(image, self.obj365_text_token)
         else:
-            text_token = tokenize(texts=text).to(self.device)
-            logits_per_image, logits_per_text = self.clip_model(image, text_token)
+            if self.text_token is None:
+                text_token = tokenize(texts=text).to(self.device)
+                logits_per_image, logits_per_text = self.clip_model(image, text_token)
+            else:
+                logits_per_image, logits_per_text = self.clip_model(image, self.text_token)
         probs = logits_per_image.softmax(dim=-1).cpu().numpy()[0, :]
         cls_id = np.argmax(probs)
         score = probs[cls_id]
-        if cls_id == probs.shape[0] - 1:
+        if text is None:
+            if score < 0.15:
+                cls_id = probs.shape[0] - 1
             return cls_id
         else:
             if score < self.cls_score_thresh:
@@ -123,8 +127,6 @@ class SamClipInsSegmentor(object):
         """
         bboxes_cls_names = []
         for idx, bbox in enumerate(mask['bboxes']):
-            # bbox = [int(tmp) for tmp in bbox]
-            # roi_image = input_image[bbox[1]:bbox[1] + bbox[3], bbox[0]:bbox[0] + bbox[2], :]
             roi_image = self._crop_rotate_image_roi(input_image, mask['segmentations'][idx])
             if roi_image is None:
                 cls_name = 'background'
@@ -133,22 +135,23 @@ class SamClipInsSegmentor(object):
             # cv2.imwrite('{:d}_mask.png'.format(idx), roi_image[:, :, (2, 1, 0)])
             cls_id = self._classify_image(roi_image, text=text)
             if text is None:
-                cls_name = self.imagenet_cls_text_prompts[cls_id]
-                cls_name.replace('a photo of', '')
+                cls_name = self.obj365_text_prompts[cls_id].split('a photo of')[1].strip(' ')
                 bboxes_cls_names.append(cls_name)
             else:
                 cls_name = text[cls_id]
-                cls_name = cls_name.split(' ')[3]
+                if cls_name.startswith('a photo of'):
+                    cls_name = cls_name.split(' ')[3]
                 bboxes_cls_names.append(cls_name)
 
         mask['bbox_cls_names'] = bboxes_cls_names
         return
 
-    def seg_image(self, input_image_path, unique_label=None):
+    def seg_image(self, input_image_path, unique_label=None, use_text_prefix=False):
         """
 
         :param input_image_path:
         :param unique_label:
+        :param use_text_prefix:
         :return:
         """
         # read input image
@@ -170,7 +173,11 @@ class SamClipInsSegmentor(object):
             if unique_label is None:
                 self._classify_mask(input_image, masks, text=None)
             else:
-                texts = utils.generate_text_prompts_for_instance_seg(unique_labels=unique_label)
+                texts = utils.generate_text_prompts_for_instance_seg(
+                    unique_labels=unique_label,
+                    use_text_prefix=use_text_prefix
+                )
+                self._set_text_tokens(texts)
                 self._classify_mask(input_image, masks, text=texts)
 
         # visualize segmentation result

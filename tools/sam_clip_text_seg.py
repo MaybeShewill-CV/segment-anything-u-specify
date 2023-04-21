@@ -33,6 +33,7 @@ def init_args():
     parser.add_argument('--text', type=str, default=None)
     parser.add_argument('--cls_score_thresh', type=float, default=None)
     parser.add_argument('--save_dir', type=str, default='./output/insseg')
+    parser.add_argument('--use_text_prefix', action='store_true')
 
     return parser.parse_args()
 
@@ -60,13 +61,14 @@ def main():
         unique_labels = None
     if args.cls_score_thresh is not None:
         insseg_cfg.INS_SEG.CLS_SCORE_THRESH = args.cls_score_thresh
+    use_text_prefix = True if args.use_text_prefix else False
 
     # init cluster
     LOG.info('Start initializing instance segmentor ...')
     segmentor = build_sam_clip_text_ins_segmentor(cfg=insseg_cfg)
-    LOG.info('Cluster initialized complete')
+    LOG.info('Segmentor initialized complete')
     LOG.info('Start to segment input image ...')
-    ret = segmentor.seg_image(input_image_path, unique_label=unique_labels)
+    ret = segmentor.seg_image(input_image_path, unique_label=unique_labels, use_text_prefix=use_text_prefix)
     LOG.info('segment complete')
 
     # save cluster result
