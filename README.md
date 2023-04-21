@@ -30,7 +30,7 @@ image features and your text prompts features.
 ```
 cd PROJECT_ROOT_DIR
 export PYTHONPATH=$PWD:$PYTHONPATH
-python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bear.jpg --text bear --cls_score_thresh 0.998
+python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bear.jpg --text bear
 ```
 
 `Bear Instance Segmentation Result, Text Prompt: bear`
@@ -66,6 +66,24 @@ python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_bea
 `Airplane Instance Segmentaton Result, Text Prompt: airplane`
 ![airplane_insseg_result](./data/resources/test_airplane_insseg_result.jpg)
 
+### Support Multiple Classes Segmentation All In Once ---- YOSO ---- You Only Segment Once
+```
+cd PROJECT_ROOT_DIR
+export PYTHONPATH=$PWD:$PYTHONPATH
+python tools/sam_clip_text_seg.py --input_image_path ./data/test_images/test_horse.jpg --text "horse,mountain,grass,sky,clouds,tree" --cls_score_thresh 0.5 --use_text_prefix
+```
+
+`Horse Instance Segmentation Result, Text Prompt: horse,mountain,grass,sky,clouds,tree`
+![horse_insseg_result](./data/resources/test_horse_insseg_result_muti_label.jpg)
+`Tv Instance Segmentaton Result, Text Prompt: television,audio system,tape recorder,box`
+![tv_insseg_result](./data/resources/test_tv_insseg_result_multi_label.jpg)
+`Strawberry Instance Segmentaton Result, Text Prompt: strawberry,grapefruit,spoon,wolfberry,oatmeal`
+![strawberry_insseg_result](./data/resources/test_strawberry_insseg_result_multi_label.jpg)
+`Frog Instance Segmentaton Result, Text Prompt: frog,turtle,snail,eye`
+![frog_insseg_result](./data/resources/test_frog_insseg_result_multi_label.jpg)
+`Frog Instance Segmentaton Result, Text Prompt: frog,turtle,snail,eye`
+![frog_insseg_result](./data/resources/test_frog_insseg_result_multi_label.jpg)
+
 ### Instance Segmentation Problem
 For now the instance segmentation result is sensitive to classification score threshold. And you may get wrong
 instance segmentation mask if the background mask contains most of the instance mask you
@@ -98,8 +116,9 @@ python tools/cluster_sam.py --input_image_path ./data/test_images/test_bear.jpg 
 Each row represents `source image`, `sam origin mask`, `ori masked image`, `clustered mask`, `cluster masked image`
 
 ## TODO
-- [ ] Test different kinds of cluster method
+- [x] Test different kinds of cluster method
 - [ ] Using cluster result as input prompts to reseg the image via sam model
+- [ ] Merge embedding feats of global image and masked image
 
 ## Acknowledgement
 

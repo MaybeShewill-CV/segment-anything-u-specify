@@ -55,7 +55,7 @@ def main():
         return
     insseg_cfg = parse_config_utils.Config(config_path=insseg_cfg_path)
     if args.text is not None:
-        unique_labels = [args.text]
+        unique_labels = args.text.split(',')
     else:
         unique_labels = None
     if args.cls_score_thresh is not None:
