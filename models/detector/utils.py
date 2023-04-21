@@ -88,17 +88,31 @@ def generate_imagenet_classification_text_prompts():
     return text_prompts
 
 
-def generate_text_prompts_for_instance_seg(unique_labels):
+def generate_object365_text_prompts():
+    """
+
+    :return:
+    """
+    text_prefix = 'a photo of'
+    text_prompts = open('./data/resources/obj365-classes.txt', 'r').readlines()
+    text_prompts = list(map(lambda x: x.rstrip('\r').rstrip('\n').split(' ')[0], text_prompts))
+    text_prompts = list(map(lambda x: ' '.join([text_prefix, x]), text_prompts))
+
+    return text_prompts
+
+
+def generate_text_prompts_for_instance_seg(unique_labels, use_text_prefix=True):
     """
 
     :param unique_labels:
+    :param use_text_prefix:
     :return:
     """
-    pos_text_pre = 'a photo of {:s}'
-    neg_text_pre = 'a photo of background'
-    text_prompts = []
-    for label in unique_labels:
-        text_prompts.append(pos_text_pre.format(label))
-    text_prompts.append(neg_text_pre)
-
+    if unique_labels[-1] != 'background':
+        unique_labels.append('background')
+    text_pre = 'a photo of {:s}'
+    if use_text_prefix:
+        text_prompts = [text_pre.format(tmp) for tmp in unique_labels]
+    else:
+        text_prompts = list(unique_labels)
     return text_prompts
