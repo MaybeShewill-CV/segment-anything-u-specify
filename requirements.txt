@@ -1,5 +1,5 @@
 ftfy
-loguru=
+loguru
 matplotlib
 numpy
 opencv_python
