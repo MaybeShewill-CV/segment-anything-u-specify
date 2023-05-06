@@ -17,8 +17,8 @@ import matplotlib.pyplot as plt
 
 def generate_color_pool(color_nums):
     """
-    随机生成颜色池, 用来给不同的车道线染不同的颜色
-    :param color_nums: 需要生成的颜色池大小
+    generate random color
+    :param color_nums:
     :return:
     """
     color_pool = []
