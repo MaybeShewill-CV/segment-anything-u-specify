@@ -122,5 +122,9 @@ Most of the repo's code borrows from opeai's clip repo and facebook's segment-an
 - [CLIP](https://github.com/openai/CLIP)
 - [segment-anything](https://github.com/facebookresearch/segment-anything)
 
+## Visitor Count
+
+![Visitor Count](https://profile-counter.glitch.me/15725187/count.svg)
+
 ## Contact
 
