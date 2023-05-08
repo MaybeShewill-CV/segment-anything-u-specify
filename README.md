@@ -124,7 +124,7 @@ Most of the repo's code borrows from opeai's clip repo and facebook's segment-an
 
 ## Visitor Count
 
-![Visitor Count](https://profile-counter.glitch.me/15725187/count.svg)
+![Visitor Count](https://profile-counter.glitch.me/15725187_sam_clip/count.svg)
 
 ## Contact
 
