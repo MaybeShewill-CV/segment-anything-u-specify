@@ -6,5 +6,5 @@
 # @File    : __init__.py.py
 # @IDE: PyCharm
 """
-日志配置类
+log utils
 """
