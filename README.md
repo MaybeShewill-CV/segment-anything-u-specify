@@ -122,6 +122,10 @@ Most of the repo's code borrows from opeai's clip repo and facebook's segment-an
 - [CLIP](https://github.com/openai/CLIP)
 - [segment-anything](https://github.com/facebookresearch/segment-anything)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=MaybeShewill-CV/segment-anything-u-specify&type=Date)](https://star-history.com/#MaybeShewill-CV/segment-anything-u-specify&Date)
+
 ## Visitor Count
 
 ![Visitor Count](https://profile-counter.glitch.me/15725187_sam_clip/count.svg)
