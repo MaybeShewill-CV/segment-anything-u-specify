@@ -21,7 +21,7 @@ CFG = parse_config_utils.sam_cfg
 def get_logger(log_file_name_prefix):
     """
 
-    :param log_file_name_prefix: log文件名前缀
+    :param log_file_name_prefix: log file prefix
     :return:
     """
     start_time = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))
