@@ -20,7 +20,7 @@ CFG = parse_config_utils.sam_cfg
 
 def get_logger(log_file_name_prefix):
     """
-
+    init logger
     :param log_file_name_prefix: log file prefix
     :return:
     """
