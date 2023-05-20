@@ -8,6 +8,14 @@ from torch import nn
 
 
 class Bottleneck(nn.Module):
+    """Bottleneck
+
+    Args:
+        nn (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     expansion = 4
 
     def __init__(self, inplanes, planes, stride=1):
