@@ -22,7 +22,7 @@ from models import build_sam_mask_generator
 
 class SamClipCluster(object):
     """
-
+    cluster segment objects from sam's output
     """
     def __init__(self, sam_cfg, clip_cfg, cluster_cfg):
         """
