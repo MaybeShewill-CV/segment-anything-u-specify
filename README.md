@@ -110,9 +110,17 @@ python tools/cluster_sam.py --input_image_path ./data/test_images/test_bear.jpg 
 
 Each row represents `source image`, `sam origin mask`, `ori masked image`, `clustered mask`, `cluster masked image`
 
+## UPDATES
+
+### 2023-07-04 Integrate MobileSAM
+
+Integrate MobileSAM into the pipeline for lightweight and faster inference. If you want to use mobile-sam to segment your
+image all you need to do is to modify `./config/sam.yaml` file. Modify the model name field to `vit_t` and modify the 
+model weight file path to `./pretrained/sam/mobile_sam.pt`
+
 ## TODO
 - [x] Test different kinds of cluster method
-- [ ] Using cluster result as input prompts to reseg the image via sam model
+- [x] Using cluster result as input prompts to reseg the image via sam model
 - [ ] Merge embedding feats of global image and masked image
 
 ## Acknowledgement
