@@ -21,9 +21,14 @@ def build_sam_model(cfg):
     :param cfg:
     :return:
     """
+    supported_model_name = ['vit_h', 'vit_l', 'vit_b', 'vit_t', 'default']
+    model_name = cfg.MODEL.MODEL_NAME
+    if model_name not in supported_model_name:
+        raise ValueError('not supported model: {:s}, only supported {}'.format(model_name, supported_model_name))
     ckpt_path = cfg.MODEL.CKPT_PATH
     device = torch.device(cfg.MODEL.DEVICE)
-    model = sam_builder.build_sam_vit_h(checkpoint=ckpt_path)
+    build_func = sam_builder.sam_model_registry[model_name]
+    model = build_func(checkpoint=ckpt_path)
     return model.to(device)
 
 

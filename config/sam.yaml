@@ -1,5 +1,6 @@
 MODEL:
-    CKPT_PATH: './pretrained/sam/sam_vit_h_4b8939.pth'
+    MODEL_NAME: 'vit_t'  # only support ['vit_h', 'vit_l', 'vit_b', 'vit_t', 'default']
+    CKPT_PATH: './pretrained/sam/mobile_sam.pt'
     DEVICE: 'cuda'
 MASK_GENERATOR:
     PTS_PER_SIDE: 32
